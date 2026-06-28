@@ -136,6 +136,49 @@ node_modules/
 ~$*
 </code></pre>
     </div>
+
+    <h3 style="color:var(--navy);margin:1.6rem 0 .3rem;font-size:1.05rem;">Back it up with GitHub (abbreviated)</h3>
+    <p class="lead">Optional but recommended &mdash; it version-controls your workspace and gives you
+       an off-machine backup. The one rule: the repo must be <strong>private</strong>, and your
+       <code>.gitignore</code> must be committed <em>first</em> so patient data can never be pushed.</p>
+    <div class="rule" style="border-left-color:var(--warn);">
+      <h3>&#9995; A clinical workspace is never a public repo.</h3>
+      <ul>
+        <li>Create the repo as <strong>Private</strong> (the <code>--private</code> flag below, or the Private toggle on github.com).</li>
+        <li>Commit the PHI <code>.gitignore</code> before any other file.</li>
+        <li>Even private, never commit real identifiers &mdash; the <code>.gitignore</code> is your backstop, not a license.</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <div class="card-head">
+        <h3>Create a private repo and push (GitHub CLI)</h3>
+        <div class="actions">
+          <span class="hint">one-time setup, then 3 commands a day</span>
+          <button class="btn" onclick="copyCode(this)">Copy</button>
+          
+        </div>
+      </div>
+      <pre class="code"><code># 1. Make a free account at github.com
+
+# 2. Install Git + the GitHub CLI (macOS shown; see cli.github.com for Windows)
+brew install gh
+gh auth login                      # opens your browser to sign in
+
+# 3. From inside your &quot;brain&quot; folder (after `git init`):
+git add .gitignore
+git commit -m &quot;Add PHI gitignore&quot;  # commit this FIRST, before anything else
+gh repo create my-second-brain --private --source=. --push
+#                               ^^^^^^^ PRIVATE — never public for clinical work
+
+# 4. Day to day, to save + back up your work:
+git add -A
+git commit -m &quot;update&quot;
+git push</code></pre>
+    </div>
+    <p class="lead">No terminal CLI? On <strong>github.com</strong>: <em>New repository</em> &rarr; set it
+       <strong>Private</strong> &rarr; create &rarr; follow the "&hellip;or push an existing repository from the
+       command line" snippet it shows you.</p>
   </section>
 
   <section id="prompt">
