@@ -55,6 +55,12 @@
   tr:last-child td { border-bottom:0; }
   td:first-child { width:170px; white-space:nowrap; }
   .twocol { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  details.promptcard summary { cursor:pointer; list-style:none; padding:.6rem .9rem;
+    background:#f1f3f6; display:flex; justify-content:space-between; gap:.6rem; align-items:center;
+    font-size:.93rem; color:var(--navy); }
+  details.promptcard summary::-webkit-details-marker { display:none; }
+  details.promptcard[open] summary { border-bottom:1px solid var(--line); }
+  .sum-hint { font-size:.74rem; color:#777; white-space:nowrap; font-weight:600; }
   @media (max-width:640px) { .twocol { grid-template-columns:1fr; } td:first-child { width:auto; } }
   footer { margin-top:3rem; padding-top:1.4rem; border-top:1px solid var(--line);
     color:#666; font-size:.85rem; }
@@ -753,19 +759,134 @@ Don&#x27;t regurgitate the exam — cite a finding only if it changes the plan.
 Plain text ready to paste into Epic. No identifiers in the body.
 </code></pre>
     </div>
+    <p class="lead">You don't hand-write skills &mdash; you have Claude Code build them. Paste this to
+       create your own version of the one above. (Every skill in <a href="#catalog">What to build</a>
+       below has its own one-click build prompt too.)</p>
+    
+    <div class="card">
+      <div class="card-head">
+        <h3>Build prompt — create your own clinic-note skill</h3>
+        <div class="actions">
+          <span class="hint">paste into Claude Code</span>
+          <button class="btn" onclick="copyCode(this)">Copy</button>
+          
+        </div>
+      </div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;clinic-note&quot;.
+
+Goal: Generate a clinic note from pasted, de-identified clinical data (referring notes, imaging, EMG/NCS) using my Epic note templates. Auto-select the right template from the diagnosis. Omit the demographics header by default; the body uses age and sex only.
+
+Trigger phrases: &quot;clinic note&quot;, &quot;draft note&quot;, &quot;follow-up note&quot; (and /clinic-note).
+
+PHI rule (critical): never let a patient name, MRN, DOB, or face reach the model. Work only from de-identified input, and emit *** placeholders for any identifier I&#x27;ll type into Epic myself. A global PHI rule also lives in .claude/rules/ -- rely on it and restate it briefly in the skill.
+
+Write it to .claude/skills/clinic-note/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </div>
   </section>
 
   <section id="catalog">
     <h2><span class="n">7</span>What you might build</h2>
-    <p class="lead">Build skills organically &mdash; whenever you notice you're repeating the
-       same request. A starting menu:</p>
-    <table><tr><td><code>clinic-note</code></td><td>Draft notes from de-identified inputs; auto-selects your template.</td></tr>
-<tr><td><code>op-report</code></td><td>Operative notes from free-form dictation, with ICD-10/CPT codes assigned.</td></tr>
-<tr><td><code>call-schedule</code></td><td>Import your on-call shifts into Google Calendar.</td></tr>
-<tr><td><code>case-log</code></td><td>Track ABPS / hand-surgery certification cases (CQ).</td></tr>
-<tr><td><code>article-filer</code></td><td>Drop a PDF → renamed, filed to the right folder, logged with a key finding.</td></tr>
-<tr><td><code>cv-update</code></td><td>Merge new publications and talks into the faculty CV template.</td></tr>
-<tr><td><code>cme-tracker</code></td><td>Log CME certificates and track recertification progress.</td></tr></table>
+    <p class="lead">Build skills organically &mdash; whenever you notice you're repeating the same
+       request. Each one below mirrors a skill I actually run; expand it and hit <strong>Copy build
+       prompt</strong> to have Claude Code create your own version, then tweak from there.</p>
+    
+    <details class="card promptcard">
+      <summary><span class="pname"><code>clinic-note</code> &mdash; Draft notes from de-identified inputs; auto-selects your template.</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;clinic-note&quot;.
+
+Goal: Generate a clinic note from pasted, de-identified clinical data (referring notes, imaging, EMG/NCS) using my Epic note templates. Auto-select the right template from the diagnosis. Omit the demographics header by default; the body uses age and sex only.
+
+Trigger phrases: &quot;clinic note&quot;, &quot;draft note&quot;, &quot;follow-up note&quot; (and /clinic-note).
+
+PHI rule (critical): never let a patient name, MRN, DOB, or face reach the model. Work only from de-identified input, and emit *** placeholders for any identifier I&#x27;ll type into Epic myself. A global PHI rule also lives in .claude/rules/ -- rely on it and restate it briefly in the skill.
+
+Write it to .claude/skills/clinic-note/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
+
+    <details class="card promptcard">
+      <summary><span class="pname"><code>op-report</code> &mdash; Operative notes from free-form dictation, with ICD-10/CPT codes assigned.</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;op-report&quot;.
+
+Goal: Generate a complete operative report from my free-form surgical dictation, and assign ICD-10 and CPT codes from the procedure described. Output is PHI-free: no patient-identifier header, age and sex only.
+
+Trigger phrases: &quot;op note&quot;, &quot;operative report&quot;, &quot;today&#x27;s dictation&quot; (and /op-report).
+
+PHI rule (critical): never let a patient name, MRN, DOB, or face reach the model. Work only from de-identified input, and emit *** placeholders for any identifier I&#x27;ll type into Epic myself. A global PHI rule also lives in .claude/rules/ -- rely on it and restate it briefly in the skill.
+
+Write it to .claude/skills/op-report/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
+
+    <details class="card promptcard">
+      <summary><span class="pname"><code>call-schedule</code> &mdash; Import your on-call shifts into Google Calendar.</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;call-schedule&quot;.
+
+Goal: Import my on-call schedule from a spreadsheet (.xlsx) and create all-day events on a chosen Google Calendar. Detect the call site from the filename.
+
+Trigger phrases: &quot;call schedule&quot;, &quot;import call&quot;, &quot;add call days&quot; (and /call-schedule).
+
+PHI: this skill touches no patient data (it&#x27;s about me or the literature), so there is no PHI to handle -- keep it that way. This needs Google Calendar access -- set up a Calendar connector or API credentials first, and tell the skill which calendar to write to.
+
+Write it to .claude/skills/call-schedule/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
+
+    <details class="card promptcard">
+      <summary><span class="pname"><code>case-log</code> &mdash; Track ABPS / hand-surgery certification cases (CQ).</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;case-log&quot;.
+
+Goal: Append surgical cases to a board-certification case log (e.g., ABPS hand surgery) stored as a local JSON file. Capture date, facility, procedure, CPT, and category, and keep running tallies by category toward the requirement.
+
+Trigger phrases: &quot;log a case&quot;, &quot;case log&quot;, &quot;case log status&quot; (and /case-log).
+
+PHI rule: store and handle DE-IDENTIFIED data only -- never a patient name, MRN, or DOB. A global PHI rule lives in .claude/rules/ -- rely on it.
+
+Write it to .claude/skills/case-log/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
+
+    <details class="card promptcard">
+      <summary><span class="pname"><code>article-filer</code> &mdash; Drop a PDF → renamed, filed to the right folder, logged with a key finding.</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;article-filer&quot;.
+
+Goal: File a research-article PDF into my Google Drive library: read it, rename it as &#x27;Author Year Journal Title&#x27;, pick the best topic subfolder, upload it, and log a one-line key finding to a tracker sheet and a local index.
+
+Trigger phrases: &quot;file this article&quot;, &quot;log this paper&quot; (and /article-filer).
+
+PHI: this skill touches no patient data (it&#x27;s about me or the literature), so there is no PHI to handle -- keep it that way. This needs Google Drive access -- set up a Drive connector first.
+
+Write it to .claude/skills/article-filer/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
+
+    <details class="card promptcard">
+      <summary><span class="pname"><code>cv-update</code> &mdash; Merge new publications and talks into the faculty CV template.</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;cv-update&quot;.
+
+Goal: Merge new publications, talks, and reviewer activity into my CV, preserving my institution&#x27;s CV template formatting (don&#x27;t regenerate from scratch). Keep a living content file as the source of truth.
+
+Trigger phrases: &quot;update my CV&quot;, &quot;add publication&quot; (and /cv-update).
+
+PHI: this skill touches no patient data (it&#x27;s about me or the literature), so there is no PHI to handle -- keep it that way.
+
+Write it to .claude/skills/cv-update/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
+
+    <details class="card promptcard">
+      <summary><span class="pname"><code>cme-tracker</code> &mdash; Log CME certificates and track recertification progress.</span><span class="sum-hint">build prompt &#9662;</span></summary>
+      <div class="actions" style="justify-content:flex-end;padding:.5rem .9rem 0;"><button class="btn" onclick="copyCode(this)">Copy build prompt</button></div>
+      <pre class="code"><code>Create a Claude Code skill named &quot;cme-tracker&quot;.
+
+Goal: Log CME certificates from PDFs or confirmation emails, file them by year, and track progress toward my board&#x27;s recertification requirement. Persist records to a local JSON file.
+
+Trigger phrases: &quot;log CME&quot;, &quot;CME status&quot; (and /cme-tracker).
+
+PHI: this skill touches no patient data (it&#x27;s about me or the literature), so there is no PHI to handle -- keep it that way.
+
+Write it to .claude/skills/cme-tracker/SKILL.md with a name, a description that lists the trigger phrases, and numbered step-by-step instructions for the workflow. Before writing, ask me for anything you need -- my templates, file locations, or account access. Then create the SKILL.md.</code></pre>
+    </details>
     <p class="lead">Every clinical skill inherits the <a href="#guardrail">PHI rule</a> automatically
        (it lives in <code>.claude/rules/</code>). Research, CV, and teaching skills touch no patient data at all.</p>
   </section>
