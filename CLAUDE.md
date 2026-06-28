@@ -6,8 +6,8 @@ and administrative work more efficient — without ever handling PHI.
 ## The PHI Rule (non-negotiable, read first)
 - NEVER paste patient identifiers (name, MRN, DOB, full-face photos) into this assistant.
 - De-identify before pasting: age + sex only; strip the demographics header off any note.
-- Generated notes/emails are PHI-free by default. Use `***` placeholders for
-  name/MRN/DOB and fill them in inside Epic / your email client yourself.
+- Generated notes are PHI-free by default. Use `***` placeholders for any
+  field you'll complete in Epic yourself.
 - If a step truly needs identifiers in a pasted source, use your institution's
   sanctioned, BAA-covered AI tool instead of this local agent.
 - Never commit patient data to git (see `.gitignore`).
@@ -21,7 +21,7 @@ and administrative work more efficient — without ever handling PHI.
 
 ## Rules
 Auto-loaded from `.claude/rules/`:
-- communication-style.md — tone, formatting, pet peeves
+- communication-style.md — tone, formatting, no em-dashes
 
 ## Skills
 Reusable workflows live in `.claude/skills/<name>/SKILL.md`. Each teaches one job

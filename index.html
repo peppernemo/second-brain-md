@@ -67,7 +67,7 @@
   <div class="wrap">
     <span class="pill" style="background:#243b6b;color:#cfe0ff;">A clinician's second brain in Claude Code</span>
     <h1>Build Your Own AI Workflow</h1>
-    <p>A second-brain setup in Claude Code that drafts your notes, billing, scheduling,
+    <p>A second-brain setup in Claude Code that drafts your clinic notes, op notes, teaching,
        and research &mdash; built on one rule: <strong>no PHI ever enters the AI</strong>.</p>
     <div class="by">Janos Barrera, MD &middot; Hand &amp; Orthoplastic Surgery</div>
   </div>
@@ -93,7 +93,7 @@
       <ul>
         <li>Not the name. Not the MRN. Not the DOB. Not the patient's face.</li>
         <li>De-identify <em>before</em> you paste &mdash; age and sex only; strip the demographics header off the note.</li>
-        <li>Notes and emails come out PHI-free, with <code>***</code> placeholders you fill inside Epic / Outlook.</li>
+        <li>Notes come out PHI-free, with <code>***</code> placeholders you fill inside Epic.</li>
         <li>If a source document still has identifiers, use your institution's sanctioned, BAA-covered tool (e.g. UltraViolet) &mdash; not a personal agent.</li>
       </ul>
     </div>
@@ -448,8 +448,8 @@ and administrative work more efficient — without ever handling PHI.
 ## The PHI Rule (non-negotiable, read first)
 - NEVER paste patient identifiers (name, MRN, DOB, full-face photos) into this assistant.
 - De-identify before pasting: age + sex only; strip the demographics header off any note.
-- Generated notes/emails are PHI-free by default. Use `***` placeholders for
-  name/MRN/DOB and fill them in inside Epic / your email client yourself.
+- Generated notes are PHI-free by default. Use `***` placeholders for any
+  field you&#x27;ll complete in Epic yourself.
 - If a step truly needs identifiers in a pasted source, use your institution&#x27;s
   sanctioned, BAA-covered AI tool instead of this local agent.
 - Never commit patient data to git (see `.gitignore`).
@@ -463,7 +463,7 @@ and administrative work more efficient — without ever handling PHI.
 
 ## Rules
 Auto-loaded from `.claude/rules/`:
-- communication-style.md — tone, formatting, pet peeves
+- communication-style.md — tone, formatting, no em-dashes
 
 ## Skills
 Reusable workflows live in `.claude/skills/&lt;name&gt;/SKILL.md`. Each teaches one job
@@ -514,7 +514,7 @@ Each active workstream gets `projects/&lt;name&gt;/README.md` (status, current s
       <pre class="code"><code>## PHI Policy (paste at the top of every clinical skill)
 
 This skill never receives or emits PHI. Patient name, MRN, and DOB are `***`
-placeholders the user fills in inside Epic / Outlook. De-identify all pasted
+placeholders the user fills in inside Epic. De-identify all pasted
 source material first (age + sex only; strip the demographics header). For any
 step that needs identifiers in a pasted source document, use the institution&#x27;s
 sanctioned, BAA-covered AI tool instead.
@@ -710,7 +710,7 @@ Plain text ready to paste into Epic. No identifiers in the body.
     <p class="lead">Build skills organically &mdash; whenever you notice you're repeating the
        same request. A starting menu:</p>
     <table><tr><td><code>clinic-note</code></td><td>Draft notes from de-identified inputs; auto-selects your template.</td></tr>
-<tr><td><code>op-report</code></td><td>Operative notes from dictation + accumulate the day&#x27;s billing email.</td></tr>
+<tr><td><code>op-report</code></td><td>Operative notes from free-form dictation, with ICD-10/CPT codes assigned.</td></tr>
 <tr><td><code>literature-prep</code></td><td>Pull anatomy, technique, pitfalls, and references for an upcoming case.</td></tr>
 <tr><td><code>article-filer</code></td><td>Drop a PDF → renamed, filed to the right folder, logged with a key finding.</td></tr>
 <tr><td><code>cv-update</code></td><td>Merge new publications and talks into the faculty CV template.</td></tr>
