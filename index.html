@@ -79,6 +79,7 @@
   <a href="#prompt">Init Prompt</a>
   <a href="#claude">CLAUDE.md</a>
   <a href="#guardrail">PHI Guardrail</a>
+  <a href="#notes">Notes: What to Paste</a>
   <a href="#skills">Example Skills</a>
   <a href="#catalog">What to Build</a>
 </div></nav>
@@ -521,8 +522,144 @@ sanctioned, BAA-covered AI tool instead.
     </div>
   </section>
 
+  <section id="notes">
+    <h2><span class="n">5</span>Notes: what to paste (and what to keep out)</h2>
+    <p class="lead">The whole rule becomes concrete here. Your Epic note template already
+       puts the patient identifiers in a <strong>header block at the very top</strong>, physically
+       separated from the clinical content. <strong>Don't paste that header.</strong> Start your
+       paste at the clinical body &mdash; age/sex and below.</p>
+    
+    <div class="card">
+      <div class="card-head">
+        <h3>Template structure — the header stays in Epic</h3>
+        <div class="actions">
+          <span class="hint">never paste the top block</span>
+          <button class="btn" onclick="copyCode(this)">Copy</button>
+          
+        </div>
+      </div>
+      <pre class="code"><code>Patient Name: @NAME@      &lt;-- the identifier header lives at the TOP,
+DOB: @DOB@                    physically separated from the clinical note.
+MRN: @MRN@                    NEVER paste this block into Claude.
+Location: {JB Location:24419}
+------------------------------------------------------------------
+Hand Surgery
+Follow Up Visit                &lt;-- start your paste HERE (clinical content only)
+
+CC
+- ***
+
+@AGE@ @SEX@ presenting with ***.
+Interval: last visit ***
+...
+Exam:
+...
+Assessment/Plan:
+@DX@</code></pre>
+    </div>
+
+    <div class="twocol">
+      <div class="card" style="border-left:5px solid var(--warn);">
+        <div class="card-head"><h3>&#9995; Never paste this</h3></div>
+        <pre class="code" style="max-height:none;"><code>Patient Name: @NAME@
+DOB: @DOB@
+MRN: @MRN@</code></pre>
+      </div>
+      <div class="card" style="border-left:5px solid var(--good);">
+        <div class="card-head"><h3>&#9989; Safe to paste</h3></div>
+        <pre class="code" style="max-height:none;"><code>28 y.o. male presenting with...
+CC / HPI / Exam / Labs /
+Imaging / Assessment &amp; Plan
+(age + sex only, no identifiers)</code></pre>
+      </div>
+    </div>
+
+    <p class="lead">Here is a <strong>real consult with every identifier already removed</strong>
+       &mdash; no name, MRN, DOB, exact dates, or facility; age and sex only. This is exactly what
+       Claude sees:</p>
+    
+    <div class="card">
+      <div class="card-head">
+        <h3>What you paste into Claude — a de-identified note</h3>
+        <div class="actions">
+          <span class="hint">no PHI</span>
+          <button class="btn" onclick="copyCode(this)">Copy</button>
+          
+        </div>
+      </div>
+      <pre class="code"><code>Orthoplastic Surgery
+Consult Note
+
+CC: Intraoperative consultation - right lower extremity / lateral ankle soft
+tissue evaluation and reconstruction planning.
+
+HPI:
+28 y.o. previously healthy male, BIBEMS as a level 1 trauma after a high-energy
+motorcycle versus auto collision with ejection (helmeted). He sustained
+bilateral lower extremity polytrauma: right open femoral shaft fracture, right
+comminuted femoral neck fracture, right patella and comminuted medial tibial
+plateau fractures, an open right Maisonneuve ankle fracture with syndesmotic
+instability, comminuted right foot fractures, and a left comminuted
+subtrochanteric femur fracture, with multiple complex right lower extremity
+soft tissue wounds. He underwent trauma washout, wound VAC, and traction on the
+day of admission, and is now intraoperative the following day with orthopaedic
+trauma for fracture stabilization. Orthoplastic surgery consulted intraoperatively
+for soft tissue evaluation and reconstruction planning.
+
+Intraoperative exam (right lower extremity):
+- Lateral distal ankle: eschar and laceration with severely contused overlying
+  skin and exposed distal fibula, over an unstable distal tibiofibular joint.
+- Distal anterior thigh: laceration; CTA with mid-femoral extravasation -
+  ipsilateral (right) ALT likely unavailable.
+- Perfusion: toes warm and well perfused; dopplerable PT; three-vessel runoff.
+
+Labs (reconstruction-relevant):
+- CBC: WBC 15.2 (H), Hgb 7.3 (L), Hct 21.2 (L), Plt 57 (L)
+- HbA1c 4.9 (non-diabetic); INR 1.1; pre-albumin not available
+
+Imaging:
+CTA with bilateral three-vessel runoff to the feet; right lower extremity with
+focal extravasation at the mid femur with distal SFA reconstitution.
+
+Assessment/Plan:
+*** (let Claude draft the recon plan)</code></pre>
+    </div>
+
+    <div class="rule" style="border-left-color:var(--blue);background:#eef3fb;border-color:#cdddf5;">
+      <h3 style="color:var(--blue);">&#128273; Messy multi-service pastes</h3>
+      <pre class="code" style="background:transparent;color:var(--ink);padding:.2rem 0;max-height:none;"><code>Pulling notes from several services where identifiers are
+scattered through the text? Before you paste into Claude:
+
+  1. Ctrl-F  -&gt;  Find &amp; Replace
+  2. Search the patient&#x27;s NAME, then AGE, then MRN
+  3. Replace All with a single space
+  4. Now paste the cleaned text
+
+The identifiers never reach the model. This keeps the paste HIPAA-safe even
+when the source notes weren&#x27;t built to separate PHI.</code></pre>
+    </div>
+
+    <p class="lead">When Claude returns the note, paste it into Epic and add your demographics
+       dot-phrase back at the top &mdash; the identifiers only ever exist inside Epic:</p>
+    
+    <div class="card">
+      <div class="card-head">
+        <h3>Demographics dot-phrase — re-add in Epic, after Claude</h3>
+        <div class="actions">
+          <span class="hint">stays in Epic</span>
+          <button class="btn" onclick="copyCode(this)">Copy</button>
+          
+        </div>
+      </div>
+      <pre class="code"><code>Patient Name: @NAME@
+DOB: @DOB@
+MRN: @MRN@
+Location: {JB Location:24419}</code></pre>
+    </div>
+  </section>
+
   <section id="skills">
-    <h2><span class="n">5</span>Example skills</h2>
+    <h2><span class="n">6</span>Example skills</h2>
     <p class="lead">A skill is one folder with a <code>SKILL.md</code> that teaches the agent a
        single job. It triggers on a phrase or <code>/name</code>. A worked, PHI-safe example:</p>
     
@@ -569,7 +706,7 @@ Plain text ready to paste into Epic. No identifiers in the body.
   </section>
 
   <section id="catalog">
-    <h2><span class="n">6</span>What you might build</h2>
+    <h2><span class="n">7</span>What you might build</h2>
     <p class="lead">Build skills organically &mdash; whenever you notice you're repeating the
        same request. A starting menu:</p>
     <table><tr><td><code>clinic-note</code></td><td>Draft notes from de-identified inputs; auto-selects your template.</td></tr>
